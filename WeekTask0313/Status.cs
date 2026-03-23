@@ -12,6 +12,8 @@ namespace WeekTask0313
 
 
 
+
+
         Player player = new Player();
         Monster monster = new Monster();
         public Status()
