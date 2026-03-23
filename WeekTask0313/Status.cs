@@ -9,6 +9,9 @@ namespace WeekTask0313
     public class Status
     {
 
+
+
+
         Player player = new Player();
         Monster monster = new Monster();
         public Status()
