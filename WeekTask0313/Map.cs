@@ -9,10 +9,9 @@ namespace WeekTask0313
 {
     public class Map
     {
-        //Dictionary<>
+        public static Random random = new Random();
 
-
-        //List
+        int doorRow, doorCol;
 
         char[,] map;
         public char[,] CurrentMap
@@ -66,11 +65,9 @@ namespace WeekTask0313
             }
 
             //DataTime dateTime = new DataTime();
-            var seed = DateTime.Now.Ticks;
-            int seeds = (int)seed;
-            //랜덤이슈 아직있음 랜덤함수하나더?
-            Random random = new Random(seeds);
-            Random random2 = new Random(2 * seeds);//굳이 2개할필요없는듯
+            //var seed = DateTime.Now.Ticks;
+            //int seeds = (int)seed;
+            
             int randomRowPlayer;
             int randomColPlayer;
             int randomDoorRow;
@@ -83,8 +80,8 @@ namespace WeekTask0313
             do
             {
                 randomColPlayer = random.Next(1, col - 1);
-                randomRowPlayer = random2.Next(1, row - 1);
-                randomDoorCol = random2.Next(1, col - 1);
+                randomRowPlayer = random.Next(1, row - 1);
+                randomDoorCol = random.Next(1, col - 1);
                 randomDoorRow = random.Next(1, row - 1);
             }
             while (randomRowPlayer == randomDoorRow && randomColPlayer == randomDoorCol);
@@ -96,13 +93,11 @@ namespace WeekTask0313
                 {
                     randomRowO = random.Next(1, row - 1);
                     randomColO = random.Next(1, col - 1);
-                    if (i > 500)//TODO : 터지는거 임시 방어 나중에 수정필요
-                    {
-                        break;
-                    }
+                    
                 }
                 while (map[randomRowO, randomColO] != ' ');
 
+                
                 map[randomRowO, randomColO] = '#';
 
             }
@@ -139,10 +134,7 @@ namespace WeekTask0313
                     randomColM = random.Next(1, col - 1);
                     randomRowM = random.Next(1, row - 1);
                     monster = new Monster(randomRowM, randomColM);
-                    if (i > 500)//TODO : 터지는거 임시 방어 나중에 수정필요
-                    {
-                        break;
-                    }
+                    
                 }
                 while (map[randomRowM, randomColM] != ' ');
              
@@ -155,18 +147,15 @@ namespace WeekTask0313
             {
                 randomDoorCol = random.Next(1, col - 1);
                 randomDoorRow = random.Next(1, row - 1);
-                int i = 0;
-                i++;
-                if (i > 500)//TODO : 터지는거 임시 방어 나중에 수정필요
-                {
-                    break;
-                }
+                
             }
             while (map[randomDoorRow, randomDoorCol] != ' ');
-
+            doorRow = randomDoorRow;
+            doorCol = randomDoorCol;
             map[randomDoorRow, randomDoorCol] = 'D';
 
             //플레이어 생성
+
             do
             {
                 randomColPlayer = random.Next(1, col - 1);

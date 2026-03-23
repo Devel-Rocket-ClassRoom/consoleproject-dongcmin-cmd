@@ -10,6 +10,9 @@ namespace WeekTask0313
         public int Hp;
         public int Attack;
         public bool IsAlive;
+
+        //private Random random = new Random();
+
         public Monster()
         {
 
@@ -122,8 +125,7 @@ namespace WeekTask0313
                 return;
             }
 
-            Random random = new Random();
-            int monsterMove = moveList[random.Next(moveList.Count)];
+            int monsterMove = moveList[Map.random.Next(moveList.Count)];
 
             switch (monsterMove)
             {
