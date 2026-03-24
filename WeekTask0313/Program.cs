@@ -4,7 +4,10 @@ using System.Collections.Generic;
 namespace WeekTask0313
 {
     
-    
+    //몬스터 처치시 아이템 > 플레이어 능력치 상승
+
+
+
     //몬스터 체력0이하이면 제거-- 각 m hp 체크
     //플레이어 먹히면 게임오버-- 아에 게임 종료.---777
 

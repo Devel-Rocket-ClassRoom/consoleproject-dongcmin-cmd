@@ -19,6 +19,10 @@ namespace WeekTask0313
         public Status()
         {
 
+
+
+
+
         }
         public void DefaultStatus()
         {
