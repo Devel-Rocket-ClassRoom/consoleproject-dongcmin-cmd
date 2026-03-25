@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Text.Json;
 namespace WeekTask0313
 {
     
@@ -30,13 +30,35 @@ namespace WeekTask0313
     //2. 몬스터의 공격 조건
     //3. 
 
-
+    
 
     internal class Program
     {
+        
         static void Main(string[] args)
         {
+            //Monster m = new Monster();
+            ////저장할 파일 경로
+            //string folderPath = "./GameData";
+            //string filePath = Path.Combine(folderPath, "data.json"); // 폴더와 파일 이름 합치기
 
+            //if (!Directory.Exists(folderPath))
+            //{
+            //    Directory.CreateDirectory(folderPath);
+            //}
+            //string result = JsonSerializer.Serialize(m, new JsonSerializerOptions { WriteIndented = true });
+            //File.WriteAllText(filePath, result);
+
+            //Console.WriteLine("Json으로 변환된 문자열 : /n" + result);
+            //Console.WriteLine();
+
+
+            //string s = File.ReadAllText(filePath);
+            //Monster mm = JsonSerializer.Deserialize<Monster>(s);
+            //if(mm != null)
+            //{
+
+            //}
             //DungeonOperater play = new DungeonOperater();
             //play.PlayGame();
 
@@ -46,6 +68,11 @@ namespace WeekTask0313
             //{
 
             //}
+            SaveLoadJson saveLoadJson = new SaveLoadJson();
+            saveLoadJson.SaveMap();
+            //saveLoadJson.LoadMap();
+
+
 
             DungeonGame game = new DungeonGame();
             Map map1 = new Map(10, 8, 2, 5);

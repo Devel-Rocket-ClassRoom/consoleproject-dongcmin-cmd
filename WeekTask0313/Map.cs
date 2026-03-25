@@ -11,7 +11,10 @@ namespace WeekTask0313
 
         int doorRow, doorCol;
 
-        char[,] map;
+        public char[,] map;
+
+
+
         public char[,] CurrentMap
         {
             get { return map; }
@@ -46,18 +49,23 @@ namespace WeekTask0313
         {
 
             map = new char[row, col];
+            //var list = new List<List<char>>();
             //맵생성
             for (int r = 0; r < row; r++)
             {
+                //var rowList = new List<char>();
                 for (int c = 0; c < col; c++)
                 {
                     if (c == 0 || c == col - 1 || r == 0 || r == row - 1)
                     {
                         map[r, c] = '#';
+                        //rowList.Add(map[r, c]);
                     }
 
                     else
                         map[r, c] = ' ';
+                    //rowList.Add(map[r, c]);
+
                 }
 
             }
