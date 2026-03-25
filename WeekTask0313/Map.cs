@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace WeekTask0313
 {
+
+
     public class Map
     {
         public static Random random = new Random();
