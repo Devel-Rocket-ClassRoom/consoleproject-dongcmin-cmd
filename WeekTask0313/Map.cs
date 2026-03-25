@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace WeekTask0313
 {
@@ -67,7 +63,7 @@ namespace WeekTask0313
             //DataTime dateTime = new DataTime();
             //var seed = DateTime.Now.Ticks;
             //int seeds = (int)seed;
-            
+
             int randomRowPlayer;
             int randomColPlayer;
             int randomDoorRow;
@@ -77,14 +73,15 @@ namespace WeekTask0313
             int randomRowO;
             int randomColO;
             //문이랑 플레이어 다른위치로!!!!!!!!! 문이랑 플레이어가 같을때 뜸
-            do
-            {
-                randomColPlayer = random.Next(1, col - 1);
-                randomRowPlayer = random.Next(1, row - 1);
-                randomDoorCol = random.Next(1, col - 1);
-                randomDoorRow = random.Next(1, row - 1);
-            }
-            while (randomRowPlayer == randomDoorRow && randomColPlayer == randomDoorCol);
+            //do
+            //{
+            //    randomColPlayer = random.Next(1, col - 1);
+            //    randomRowPlayer = random.Next(1, row - 1);
+            //    randomDoorCol = random.Next(1, col - 1);
+            //    randomDoorRow = random.Next(1, row - 1);
+            //}
+            //while (randomRowPlayer == randomDoorRow && randomColPlayer == randomDoorCol);
+
 
             //장애물생성
             for (int i = 0; i < obj; i++)
@@ -93,38 +90,38 @@ namespace WeekTask0313
                 {
                     randomRowO = random.Next(1, row - 1);
                     randomColO = random.Next(1, col - 1);
-                    
+
                 }
                 while (map[randomRowO, randomColO] != ' ');
 
-                
+
                 map[randomRowO, randomColO] = '#';
 
             }
-            
 
+            //TODO : 몬스터 생성 무한 루프 개선
             //몬스터 랜덤 생성
             //스테이지에 따라 다른 
             //빈칸찾기 > 리스트 튜플 > 개수만큼 랜덤
-            int bCount = 0;
-            List<(int, int)> ints = new List<(int, int)>();
-            for(int r = 0; r < row; r++)
-            {
-                for(int c = 0; c < col; c++)
-                {
-                    if(map[r, c] == ' ')
-                    {
-                        ints.Add((r, c));
-                    }
-                }
-            }
+            //int bCount = 0;
+            //List<(int, int)> ints = new List<(int, int)>();
+            //for(int r = 0; r < row; r++)
+            //{
+            //    for(int c = 0; c < col; c++)
+            //    {
+            //        if(map[r, c] == ' ')
+            //        {
+            //            ints.Add((r, c));
+            //        }
+            //    }
+            //}
+            //for (int i = 0; i < mon; i++)
+            //{
+            //    randomColM = random.Next(ints.Count);
+
+            //}
+
             for (int i = 0; i < mon; i++)
-            {
-                randomColM = random.Next(ints.Count);
-
-            }
-
-                for (int i = 0; i < mon; i++)
             {
                 Monster monster;
 
@@ -134,20 +131,20 @@ namespace WeekTask0313
                     randomColM = random.Next(1, col - 1);
                     randomRowM = random.Next(1, row - 1);
                     monster = new Monster(randomRowM, randomColM);
-                    
+
                 }
                 while (map[randomRowM, randomColM] != ' ');
-             
-                map[randomRowM, randomColM] = 'M';
+
+                //map[randomRowM, randomColM] = 'M'; 업데이트 함수 생성 필요.
                 monsters.Add(monster);
-                
+
             }
             //문 생성
             do
             {
                 randomDoorCol = random.Next(1, col - 1);
                 randomDoorRow = random.Next(1, row - 1);
-                
+
             }
             while (map[randomDoorRow, randomDoorCol] != ' ');
             doorRow = randomDoorRow;
@@ -160,24 +157,24 @@ namespace WeekTask0313
             {
                 randomColPlayer = random.Next(1, col - 1);
                 randomRowPlayer = random.Next(1, row - 1);
-                int i = 0;
-                i++;
-                if (i > 500)//TODO : 터지는거 임시 방어 나중에 수정필요
-                {
-                    break;
-                }
+
             }
             while (map[randomRowPlayer, randomColPlayer] != ' ');
 
-            map[randomRowPlayer, randomColPlayer] = 'P';
+
 
 
 
 
             //직업에따라 다른
-            map[randomRowPlayer, randomColPlayer] = 'P';
+            //map[randomRowPlayer, randomColPlayer] = 'P'; 업데이트 함수 생성 필요.
             Console.WriteLine($"P{randomRowPlayer} {randomColPlayer}");
 
+            UpdateMap();
+        }
+
+        public void UpdateMap()
+        {
 
         }
         public int DetectDoor()
@@ -297,12 +294,12 @@ namespace WeekTask0313
             return (monsterNumber);
 
         }
-        
+
 
         public List<(int, int)> MonsterPosList()
         {
             List<(int, int)> monPosList = new List<(int, int)>();
-            
+
             int row = map.GetLength(0);
             int col = map.GetLength(1);
 
@@ -351,7 +348,7 @@ namespace WeekTask0313
         //public List<(int, int)> ListMonsterPos()//몬스터 개수만큼 반복
         //{
         //    List<(int, int)> monPosList = new List<(int, int)>();
-            
+
 
         //    for (int i = 0; i < CountMonster(); i++)
         //    {
