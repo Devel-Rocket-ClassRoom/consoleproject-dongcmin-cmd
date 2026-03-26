@@ -40,44 +40,7 @@ namespace WeekTask0313
     }
     public class SaveLoadJson
     {
-        // 2차원 맵을 List로 바꾸는 함수
-        static public List<List<char>> ConvertMap1(char[,] map)
-        {
-            var list = new List<List<char>>();
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                var row = new List<char>();
-                for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    row.Add(map[i, j]);
-                }
-                list.Add(row);
-            }
-
-            return list;
-        }
-
-        // 2차원 맵을 char[][]로 바꾸는 함수
-        static public char[][] 
-            ConvertMap2(char[,] map)
-        {
-            int rows = map.GetLength(0);
-            int cols = map.GetLength(1);
-            char[][] result = new char[rows][];
-
-            for (int i = 0; i < rows; i++)
-            {
-                result[i] = new char[cols];
-                for (int j = 0; j < cols; j++)
-                {
-                    result[i][j] = map[i, j];
-
-                }
-            }
-
-            return result;
-        }
-
+        
         static public string[] ConvertMap3(char[,] map)
         {
             int rows = map.GetLength(0);
@@ -94,16 +57,49 @@ namespace WeekTask0313
             }
             return mapLines;
         }
-
-        public void SaveMap()
+        private string GetFilePath(Map.MapType mapType)
         {
-            
-            Map map = new Map(10, 8, 2, 5);
-            
+            string folderPath = "./Map";
+            string filePath;
+
+            switch (mapType)
+            {
+                case Map.MapType.startMap:
+                    {
+                        filePath = Path.Combine(folderPath, "startmap.json");
+                        break;
+                    }
+                case Map.MapType.eventMap:
+                    {
+                        filePath = Path.Combine(folderPath, "eventmap.json");
+                        break;
+                    }
+                case Map.MapType.bossMap:
+                    {
+                        filePath = Path.Combine(folderPath, "bossmap.json");
+                        break;
+                    }
+                default:
+                    {
+                        filePath = Path.Combine(folderPath, "map.json");
+                        break;
+                    }
+            }
+            return filePath;
+        }
+        public void SaveMap(Map.MapType mapType)
+        {
+
+            //Map map = new Map(10, 8, 2, 5);
+            //Map map = new Map(Map.MapType.bossMap);
             
 
             string folderPath = "./Map";
-            string filePath = Path.Combine(folderPath, "map.json");
+            string filePath = GetFilePath(mapType);
+            
+            Map map = new Map(mapType);
+
+            //string filePath1 = Path.Combine(folderPath, "map.json");
 
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
@@ -115,22 +111,35 @@ namespace WeekTask0313
 
         }
 
-        public void LoadMap()
+        public char[,] LoadMap(Map.MapType mapType)
         {
+            string filePath = GetFilePath(mapType);
             
-            string folderPath = "./Map";
-            string filePath = Path.Combine(folderPath, "map.json");
-
             string s = File.ReadAllText(filePath);
-            Map mm = JsonSerializer.Deserialize<Map>(s);
+            string[] mm = JsonSerializer.Deserialize<string[]>(s);
 
             if (mm != null)
             {
+                int rows = mm.Length;
+                int cols = mm[0].Length;
+                char[,] map = new char[rows,cols];
+                for(int r  = 0; r < rows; r++)
+                {
+                    for(int c = 0; c < cols; c++)
+                    {
+                        map[r, c] = mm[r][c];
+                    }
+                    
+                }
                 Console.WriteLine("읽기 성공!: " + mm);
+
+                return map;
+
             }
             else
             {
                 Console.WriteLine("정상적인 데이터가 아닙니다.");
+                return null;
             }
         }
         // GameData를 Json으로 저장하는 테스트 함수

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using static WeekTask0313.Monster;
 
 namespace WeekTask0313
 {
-
-
+    //TODO : 특별 스테이지는 json으로 save load하기. - 보스
+    
     public class Map
     {
         public static Random random = new Random();
@@ -19,10 +20,45 @@ namespace WeekTask0313
         {
             get { return map; }
         }
-        List<Monster> monsters = new List<Monster>();
-        public Map()
-        {
+        List<Monster> Monsters = new List<Monster>();
 
+        //public List<Monster> Monsters // 몬스터 명단을 외부에서 확인(접근) 가능하게 하는 프로퍼티
+        //{
+        //    get { return monsters; }
+        //}
+
+        public int Stage { get; private set; }
+        public Player Player { get; private set; }
+        public enum MapType//미리저장할 맵
+        {
+            startMap,
+            eventMap,
+            bossMap
+        }
+        public MapType mapType;
+        public Map(MapType type)
+        {
+            mapType = type;
+            switch (type)
+            {
+                case MapType.startMap:
+                    {
+                        StartMap();
+                        break;
+                    }
+                case MapType.eventMap:
+                    {
+                        EventMap();
+                        break;
+                    }
+                  
+                case MapType.bossMap:
+                    {
+                        BossMap();
+                        break;
+                    }
+            }
+            
         }
         public Map(int r, int c, int m, int o)
         {
@@ -42,6 +78,75 @@ namespace WeekTask0313
                 }
                 Console.WriteLine();
             }
+
+        }
+
+        private void StartMap()//시작맵
+        {
+            int row = 20;
+            int col = 20;
+            map = new char[row, col];
+
+            for (int r = 0; r < row; r++)
+            {
+                for (int c = 0; c < col; c++)
+                {
+                    if (c == 0 || c == col - 1 || r == 0 || r == row - 1)
+                    {
+                        map[r, c] = '#';
+                        
+                    }
+                    else
+                        map[r, c] = ' ';
+                }
+            }
+            map[15, 15] = 'M';
+            map[5, 5] = 'P';
+
+        }
+        private void EventMap()//이벤트맵
+        {
+            int row = 15;
+            int col = 15;
+            map = new char[row, col];
+
+            for (int r = 0; r < row; r++)
+            {
+                for (int c = 0; c < col; c++)
+                {
+                    if (c == 0 || c == col - 1 || r == 0 || r == row - 1)
+                    {
+                        map[r, c] = '#';
+
+                    }
+                    else
+                        map[r, c] = ' ';
+                }
+            }
+            map[5, 5] = 'P';
+
+        }
+        private void BossMap()//보스맵
+        {
+            int row = 50;
+            int col = 50;
+            map = new char[row, col];
+
+            for (int r = 0; r < row; r++)
+            {
+                for (int c = 0; c < col; c++)
+                {
+                    if (c == 0 || c == col - 1 || r == 0 || r == row - 1)
+                    {
+                        map[r, c] = '#';
+
+                    }
+                    else
+                        map[r, c] = ' ';
+                }
+            }
+            map[45, 45] = 'M';
+            map[5, 5] = 'P';
 
         }
 
@@ -140,13 +245,13 @@ namespace WeekTask0313
                 {
                     randomColM = random.Next(1, col - 1);
                     randomRowM = random.Next(1, row - 1);
-                    monster = new Monster(randomRowM, randomColM);
+                    monster = new Monster(GetStageMonsterType() ,randomRowM, randomColM);
 
                 }
                 while (map[randomRowM, randomColM] != ' ');
 
                 //map[randomRowM, randomColM] = 'M'; 업데이트 함수 생성 필요.
-                monsters.Add(monster);
+                Monsters.Add(monster);
 
             }
             //문 생성
@@ -183,10 +288,49 @@ namespace WeekTask0313
             UpdateMap();
         }
 
-        public void UpdateMap()
+        public void UpdateMap()//플레이어 몬스터 삭제, 생성 업데이트
         {
+            for (int r = 0; r < map.GetLength(0); r++)
+            {
+                for (int c = 0; c < map.GetLength(1); c++)
+                {
+                    if (map[r, c] == 'P' || map[r, c] == 'M')
+                    {
+                        map[r, c] = ' ';
+                    }
+                }
+            }
+
+            for (int i = 0; i < Monsters.Count; i++)
+            {
+                if (Monsters[i].IsAlive)
+                {
+                    map[Monsters[i].Row, Monsters[i].Col] = 'M';
+                }
+            }
+
+            if (Player != null && Player.IsAlive)
+            {
+                map[Player.Row, Player.Col] = 'P';
+            }
+
 
         }
+        public bool CanMove(int row, int col)
+        {
+            if (!IsInside(row, col))
+            {
+                return false;
+            }
+            if (map[row, col] == '#' || map[row, col] == 'M')
+            {
+                return false;
+            }
+
+
+            return true;
+        }
+
         public int DetectDoor()
         {
             //문 개수
@@ -355,6 +499,30 @@ namespace WeekTask0313
             return (monsterDie);
 
         }
+
+        private bool IsInside(int row, int col)
+        {
+            return row < map.GetLength(0) && col < map.GetLength(1) && row >= 0 && col >= 0;
+        }
+
+        private Monster.MonsterType GetStageMonsterType()
+        {
+            switch (Stage)
+            {
+                case 1:
+                    return Monster.MonsterType.Slime;
+
+                case 2:
+                    return Monster.MonsterType.Goblin;
+
+                case 3:
+                    return Monster.MonsterType.Orc;
+
+                default: // 4스테이지 이상은 Dragon으로 설정됩니다.
+                    return Monster.MonsterType.Dragon;
+            }
+        }
+
         //public List<(int, int)> ListMonsterPos()//몬스터 개수만큼 반복
         //{
         //    List<(int, int)> monPosList = new List<(int, int)>();

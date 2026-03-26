@@ -14,8 +14,8 @@ namespace WeekTask0313
 
 
 
-        Player player = new Player();
-        Monster monster = new Monster();
+        Player player;
+        //Monster monster = new Monster();
         public Status()
         {
 
@@ -52,7 +52,7 @@ namespace WeekTask0313
             
             Console.WriteLine("몬스터");
             //Console.WriteLine("몬스터직업");
-            Console.WriteLine("Hp :" + monster.Hp);//직업에따라 다름
+            //Console.WriteLine("Hp :" + monster.Hp);//직업에따라 다름
             Console.WriteLine("Damage : " + Dungeon.monsterDamage);
 
         }

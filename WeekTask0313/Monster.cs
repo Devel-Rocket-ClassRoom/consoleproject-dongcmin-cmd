@@ -3,34 +3,8 @@ using System.Collections.Generic;
 
 namespace WeekTask0313
 {
-    public class Monster
+    public class Monster : Character
     {
-        public int Row;
-        public int Col;
-        public int Hp;
-        public int Attack;
-        public bool IsAlive;
-
-        //private Random random = new Random();
-
-        public Monster()
-        {
-
-        }
-        public Monster(int r, int c)
-        {
-            Row = r;
-            Col = c;
-            Hp = 100;
-            Attack = 20;
-        }
-
-        public Monster(int stage)
-        {
-            //스테이지에 따라 다른 몬스터 출력
-        }
-
-
         public enum MonsterType
         {
             Slime,
@@ -38,7 +12,15 @@ namespace WeekTask0313
             Orc,
             Dragon
         }
-        public MonsterType monType;
+
+        public MonsterType MonType { get; private set; }
+        public Monster(MonsterType monType, int r, int c) : base(monType.ToString(), 0, 0, r, c)
+        {
+            MonType = monType; // 기본값으로 슬라임 설정.
+            MonsterStats();
+        }
+        
+        
 
         public void MonsterAttack()
         {
@@ -49,7 +31,7 @@ namespace WeekTask0313
 
         public (int, int) MonsterStats()
         {
-            switch (monType)
+            switch (MonType)
             {
                 case MonsterType.Slime:
                     Hp = 10;
@@ -71,11 +53,8 @@ namespace WeekTask0313
             return (Hp, Attack);
         }
 
-
-
-
         public void MonsterMove(Map map)
-        {    // TODO : 몬스터가 비슷한 방향으로 움직임
+        {    
 
             var monsterPos = map.MonsterPosList();
 
@@ -155,12 +134,12 @@ namespace WeekTask0313
 
         }
 
-        //    protected override void MakeSound()
-        //    {
-        //        //throw new NotImplementedException();
-        //    }
+        protected override void MakeSound()
+        {
+            //throw new NotImplementedException();
+        }
         //    private delegate void PrintNameDelegate(); PrintNameDelegate PrintName = PrintRealName;
-               //    public void PrintName()
+        //    public void PrintName()
         //    {
 
         //    }
@@ -169,7 +148,7 @@ namespace WeekTask0313
 
         //    }
         //}
-        
+
 
     }
 }

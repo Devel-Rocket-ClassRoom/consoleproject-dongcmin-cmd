@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text.Json;
 namespace WeekTask0313
 {
-    
+    //오프닝- 시작 스테이지(저장된)- - -이벤트스테이지(저장된)- - -보스스테이지(저장된)-엔딩
+
+
     //몬스터 처치시 아이템 > 플레이어 능력치 상승
 
 
@@ -69,8 +71,8 @@ namespace WeekTask0313
 
             //}
             SaveLoadJson saveLoadJson = new SaveLoadJson();
-            saveLoadJson.SaveMap();
-            //saveLoadJson.LoadMap();
+            saveLoadJson.SaveMap(Map.MapType.startMap);
+            saveLoadJson.LoadMap(Map.MapType.startMap);
 
 
 
@@ -115,18 +117,7 @@ namespace WeekTask0313
     {
 
     }
-    public abstract class character
-    {
-        private string name;
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        abstract protected void MakeSound();
-        //abstract protected 000   >> override protected void 000
-    }
+    
     public class Dungeon
     {
         //스테이지1 슬라임
@@ -156,76 +147,76 @@ namespace WeekTask0313
 
     }
 
-    public class DungeonOperater  
-    {
+    //public class DungeonOperater  
+    //{
 
-        public void GameLoop(Map map)
-        {
-            //게임
-            while (true)
-            {
-                Player player = new Player();
+    //    public void GameLoop(Map map)
+    //    {
+    //        //게임
+    //        while (true)
+    //        {
+    //            Player player = new Player();
 
-                map.PrintMap();
+    //            map.PrintMap();
 
-                //var PlayerPos = map.FindPlayer();
-                var MonserNum = map.CountMonster();
+    //            //var PlayerPos = map.FindPlayer();
+    //            var MonserNum = map.CountMonster();
 
-                //int playerX = PlayerPos.Item1;
-                //int playerY = PlayerPos.Item2;
-                int monsterNumber = MonserNum;
-                if (map.DetectDoor() == 0)
-                {
+    //            //int playerX = PlayerPos.Item1;
+    //            //int playerY = PlayerPos.Item2;
+    //            int monsterNumber = MonserNum;
+    //            if (map.DetectDoor() == 0)
+    //            {
 
-                    break;
-                }
+    //                break;
+    //            }
 
-                player.PlayerControl(map);
-                //Console.WriteLine(playerX);
-                //Console.WriteLine(playerY);
-                //Console.WriteLine();
-
-
-            }
-        }
-        public void SetStage()
-        {
-            List<Map> listMap = new List<Map>();
-            Map map1 = new Map(10, 8, 3, 5);
-            Map map2 = new Map(15, 12, 5, 7);
-            Map map3 = new Map(20, 15, 7, 9);
-            Map map4 = new Map(30, 20, 8, 11);
-            listMap.Add(map1);
-            listMap.Add(map2);
-            listMap.Add(map3);
-            listMap.Add(map4);
+    //            player.PlayerControl(map);
+    //            //Console.WriteLine(playerX);
+    //            //Console.WriteLine(playerY);
+    //            //Console.WriteLine();
 
 
-        }
-        public void PlayGame()
-        {
+    //        }
+    //    }
+    //    public void SetStage()
+    //    {
+    //        List<Map> listMap = new List<Map>();
+    //        Map map1 = new Map(10, 8, 3, 5);
+    //        Map map2 = new Map(15, 12, 5, 7);
+    //        Map map3 = new Map(20, 15, 7, 9);
+    //        Map map4 = new Map(30, 20, 8, 11);
+    //        listMap.Add(map1);
+    //        listMap.Add(map2);
+    //        listMap.Add(map3);
+    //        listMap.Add(map4);
 
 
-
-            //오프닝
-            Map map1 = new Map(5, 5, 1, 2);
+    //    }
+    //    public void PlayGame()
+    //    {
 
 
 
-
-            GameLoop(map1);
-
-            Map map2 = new Map(15, 12, 5, 7);
-            Map map3 = new Map(20, 15, 7, 9);
-            Map map4 = new Map(30, 20, 8, 11);
-            GameLoop(map2);
-            GameLoop(map3);
-            GameLoop(map4);
+    //        //오프닝
+    //        Map map1 = new Map(5, 5, 1, 2);
 
 
-            //엔딩
-        }
-    }
+
+
+    //        GameLoop(map1);
+
+    //        Map map2 = new Map(15, 12, 5, 7);
+    //        Map map3 = new Map(20, 15, 7, 9);
+    //        Map map4 = new Map(30, 20, 8, 11);
+    //        GameLoop(map2);
+    //        GameLoop(map3);
+    //        GameLoop(map4);
+
+
+    //        //엔딩
+    //    }
+    //}
     public class DungeonGame
     {
         public DungeonGame()
@@ -234,7 +225,7 @@ namespace WeekTask0313
         }
         public void Play(Map map)
         {
-            Monster monster = new Monster();
+            //Monster monster = new Monster();
             
 
             ////플레이어 이름 설정
@@ -256,7 +247,7 @@ namespace WeekTask0313
             while (true)
             {
                 //플레이어 이동 > PlayerControl
-                Player player = new Player();
+                Player player = new Player("d", "w", 5, 5); // TODO : 임시--- 수정
                 player.PlayerControl(map);
                 //D에 들어가면 끝
                 if (map.DetectDoor() == 0)
@@ -271,7 +262,7 @@ namespace WeekTask0313
                 //결과창 > 상태창 출력-플레이어 몬스터 Status.NowPlayerStatus
                 status.NowMonsterStatus();
                 //몬스터 이동 > MonsterMovement
-                monster.MonsterMove(map);
+               // monster.MonsterMove(map);
                 //몬스터가 플레이어 먹으면 끝 p가 없으면 게임오버****
                 if(map.PlayerDie() == true)
                 {
@@ -282,7 +273,7 @@ namespace WeekTask0313
                 Console.Clear();
                 map.PrintMap();
                 //(공격) > MonsterAttack
-                monster.MonsterAttack();
+                //monster.MonsterAttack();
                 //결과창 NowMonsterStatus
                 status.NowPlayerStatus();
                 
